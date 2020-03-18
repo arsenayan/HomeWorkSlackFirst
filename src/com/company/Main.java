@@ -16,8 +16,13 @@ public class Main {
         File fileResult = new File("ResultFile.txt");
 
         try {
+            if (file.exists()) {
+                file.delete();
+
+
+            }
             if (!file.exists()) {
-                file.createNewFile();
+
                 fileResult.createNewFile();
 
             }
@@ -55,7 +60,7 @@ public class Main {
     }
 
     public static void writeToFile(File file, String data) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
         writer.write(data);
         writer.write(System.lineSeparator());
         writer.flush();
@@ -71,15 +76,14 @@ public class Main {
 
         String str;
         String word = "hello";
-        int i = 0;
+        int lineNummber = 1;
         while ((str = reader.readLine()) != null) {
-
+            int i = 0;
 
             i = countOccurences(str, word);
 
-            // reade.write(Integer.valueOf(linecount).toString());
-            reade.write(Integer.valueOf(i).toString());
-
+            reade.write(lineNummber + "=" + i + "\n");
+            lineNummber++;
         }
         reade.flush();
         reader.close();
