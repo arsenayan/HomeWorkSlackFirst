@@ -13,14 +13,20 @@ public class Main {
 
 
         File file = new File("wordFile.txt");
+        File fileResult = new File("ResultFile.txt");
+
         try {
             if (!file.exists()) {
                 file.createNewFile();
+                fileResult.createNewFile();
 
             }
             boolean exists = file.exists();
+            if (exists) {
+                System.out.println(" Write your text and pleas put , between words");
+            }
 
-            System.out.println("First file exists : " + exists);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -32,8 +38,10 @@ public class Main {
                 state = false;
             } else {
                 try {
-                    String[] s = str.split(",");
+
+                    String s[] = str.split(",");
                     writeToFile(file, str);
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -41,12 +49,13 @@ public class Main {
             }
 
         }
+        modify(file, fileResult);
 
 
     }
 
     public static void writeToFile(File file, String data) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write(data);
         writer.write(System.lineSeparator());
         writer.flush();
@@ -55,46 +64,44 @@ public class Main {
 
     }
 
-    public static void modify(File fileToRead) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(fileToRead));
+    public static void modify(File file, File fileResult) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        BufferedWriter reade = new BufferedWriter(new FileWriter(fileResult));
 
 
         String str;
-        int wordCount = 0;
-
+        String word = "hello";
+        int i = 0;
         while ((str = reader.readLine()) != null) {
 
 
-            if (str.equalsIgnoreCase("hello")) {
-                wordCount++;
-            }
+            i = countOccurences(str, word);
+
+            // reade.write(Integer.valueOf(linecount).toString());
+            reade.write(Integer.valueOf(i).toString());
 
         }
-
-
+        reade.flush();
         reader.close();
+        reade.close();
 
 
-        System.out.println(str);
     }
-    /*public Integer count(int c) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("wordFile.txt"));
 
-        String str;
-        int wordCount = 0;
 
-        while ((str = reader.readLine()) != null) {
+    static int countOccurences(String str, String word) {
 
-            str = str.toUpperCase();
-            if (str.equalsIgnoreCase("hello")) {
-                wordCount++;
-            }
+        String a[] = str.split(",");
 
+
+        int count = 0;
+        for (int i = 0; i < a.length; i++) {
+
+            if (word.equals(a[i]))
+                count++;
         }
-        c=wordCount;
 
-        reader.close();
+        return count;
+    }
 
-        return c;
-    }*/
 }
